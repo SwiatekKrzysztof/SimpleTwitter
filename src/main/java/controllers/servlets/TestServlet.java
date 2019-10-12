@@ -1,15 +1,20 @@
 package controllers.servlets;
 
-import java.io.IOException;
+import dao.UserDAO;
+import model.User;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import model.User;
+import java.io.IOException;
+import java.util.Date;
+import java.util.List;
 
 @WebServlet(name = "test", value = "/test")
 public class TestServlet extends HttpServlet {
+  UserDAO userDAO = new UserDAO();
 
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -20,7 +25,14 @@ public class TestServlet extends HttpServlet {
   protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
     User user = new User.UserBuilder().buildPassword("lala").buildEmail("w@w.pl").buildLastName("kowalik").buildName("Gabi")
         .buildLogin("Gabs").buildUser();
-    req.setAttribute("user", user);
+
+    List<User> users = userDAO.getAllUsers();
+    req.setAttribute("users",users);
+    req.setAttribute("user",user);
+    req.getSession().setAttribute("me","MarkSession");
+    req.setAttribute("now", new Date());
     req.getRequestDispatcher("test.jsp").forward(req, resp);
+
+
   }
 }

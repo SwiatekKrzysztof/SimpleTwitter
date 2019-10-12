@@ -35,7 +35,7 @@ public class UserDAO extends AbstractDao {
     query.setParameter("login", login);
     query.setParameter("password", password);
     Object singleResult = query.getSingleResult();
-    return ((Long)singleResult > 0) ? true : false;
+    return (Long) singleResult > 0;
   }
 
   public List<User> getFollowedUser(String login) {
@@ -45,7 +45,7 @@ public class UserDAO extends AbstractDao {
     return query.setParameter("userId", userId).getResultList();
   }
 
-  public  List<User> getNotFollowedUsers(String login) {
+  public List<User> getNotFollowedUsers(String login) {
     Query query = entityManager.createQuery("select u from User u where u.login != :login");
     query.setParameter("login", login);
     //TODO implement query with left join relation to follows_followed table
@@ -71,6 +71,10 @@ public class UserDAO extends AbstractDao {
       currentUser.getFollows().remove(userToStopFollowing);
       saveUser(currentUser);
     }
+  }
+  public List<User> getAllUsers(){
+    TypedQuery typedQuery = entityManager.createQuery("select u from User u",User.class);
+    return typedQuery.getResultList();
   }
 
 }
