@@ -1,5 +1,6 @@
 package controllers.servlets;
 
+import controllers.servlets.utils.ServletUtils;
 import dao.UserDAO;
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -14,7 +15,6 @@ import services.UserService;
 public class RegisterServlet extends HttpServlet {
   private final String PASSWORD = "password";
   private final String REPEATED_PASSWORD = "passwordRepeated";
-  private final String LOGIN = "login";
   private final String USERNAME = "username";
   private final String LASTNAME = "lastName";
   private final String EMAIL = "email";
@@ -34,7 +34,7 @@ public class RegisterServlet extends HttpServlet {
 
   @Override
   protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-    String login = req.getParameter(LOGIN);
+    String login = req.getParameter(ServletUtils.LOGIN);
     String password = req.getParameter(PASSWORD);
     String repeatedPassword = req.getParameter(REPEATED_PASSWORD);
     String email = req.getParameter(EMAIL);

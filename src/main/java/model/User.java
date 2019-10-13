@@ -1,5 +1,6 @@
 package model;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.CascadeType;
@@ -23,6 +24,9 @@ public class User {
   @Column(name = "id")
   private long id;
 
+  @Column(name = "date_of_registration")
+  private Date dateOfRegistration;
+
   @Column(name = "login")
   private String login;
 
@@ -37,6 +41,7 @@ public class User {
 
   @Column(name = "password")
   private String password;
+
 
   @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
   @JoinTable(name = "follows_followers",
@@ -114,18 +119,27 @@ public class User {
     this.followed = followed;
   }
 
+  public Date getDateOfRegistration() {
+    return dateOfRegistration;
+  }
+
+  public void setDateOfRegistration(Date dateOfRegistration) {
+    this.dateOfRegistration = dateOfRegistration;
+  }
+
   @Override
   public String toString() {
     return "User{" +
-        "id=" + id +
-        ", login='" + login + '\'' +
-        ", name='" + name + '\'' +
-        ", lastName='" + lastName + '\'' +
-        ", email='" + email + '\'' +
-        ", password='" + password + '\'' +
-        ", follows=" + follows +
-        ", followed=" + followed +
-        '}';
+            "id=" + id +
+            ", dateOfRegistration=" + dateOfRegistration +
+            ", login='" + login + '\'' +
+            ", name='" + name + '\'' +
+            ", lastName='" + lastName + '\'' +
+            ", email='" + email + '\'' +
+            ", password='" + password + '\'' +
+            ", follows=" + follows +
+            ", followed=" + followed +
+            '}';
   }
 
   public static class UserBuilder {

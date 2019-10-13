@@ -1,5 +1,6 @@
 package controllers.servlets;
 
+import controllers.servlets.utils.ServletUtils;
 import dao.UserDAO;
 
 import java.io.IOException;
@@ -16,7 +17,6 @@ public class LoginServlet extends HttpServlet {
     private static final int SECONDS_IN_DAY = 60 * 60 * 24;
     private static final String CHECKBOX_SELECTED = "on";
     private final String PASSWORD = "password";
-    private final String LOGIN = "login";
     private final String REMEMBER = "remember";
     private final String LOGIN_COOKIE = "twitter_login";
     private final String PASSWORD_COOKIE = "twitter_password";
@@ -59,7 +59,7 @@ public class LoginServlet extends HttpServlet {
             }
         }
         if (null != login && null != password) {
-            req.setAttribute(LOGIN, login);
+            req.setAttribute(ServletUtils.LOGIN, login);
             req.setAttribute(PASSWORD, password);
             doPost(req, resp);
         } else {
@@ -84,18 +84,18 @@ public class LoginServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String login = req.getParameter(LOGIN);
+        String login = req.getParameter(ServletUtils.LOGIN);
         String password = req.getParameter(PASSWORD);
         String remember = req.getParameter(REMEMBER);
 
         PrintWriter writer = resp.getWriter();
         if (null == login || null == password) {
-            login = (String) req.getAttribute(LOGIN);
+            login = (String) req.getAttribute(ServletUtils.LOGIN);
             password = (String) req.getAttribute(PASSWORD);
             //req.getRequestDispatcher("/login.jsp").include(req, resp);
         }
         if (userDAO.isUserValid(login, password)) {
-            req.getSession().setAttribute(LOGIN, login);
+            req.getSession().setAttribute(ServletUtils.LOGIN, login);
             if (null != remember && remember.equals(CHECKBOX_SELECTED)) {
                 Cookie loginCookie = new Cookie(LOGIN_COOKIE, login);
                 Cookie passwordCookie = new Cookie(PASSWORD_COOKIE, password);
